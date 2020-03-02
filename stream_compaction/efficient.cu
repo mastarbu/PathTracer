@@ -12,14 +12,37 @@ namespace StreamCompaction {
             return timer;
         }
 
+
+		__global__  void scanInternal(int n, int *odata, const int *idata)
+		{
+			// TODO
+
+
+		}
         /**
          * Performs prefix-sum (aka scan) on idata, storing the result into odata.
          */
-        void scan(int n, int *odata, const int *idata) {
-            timer().startGpuTimer();
-            // TODO
-            timer().endGpuTimer();
-        }
+		void scan(int n, int *odata, const int *idata)
+		{
+			timer().startGpuTimer();
+
+			// Allocate GPU memory and write in.
+			int *in, *out;
+			cudaMalloc(&in, n * sizeof(int));
+			cudaMalloc(&out, n * sizeof(int));
+			cudaMemcpy(in, idata, n * sizeof(int), cudaMemcpyHostToDevice);
+
+
+			const int blockSize = 128;
+			int blockNum = (n + blockSize - 1) / blockSize;
+			scanInternal << <blockNum, blockSize >> > (n, odata, idata);
+			// Write the data back to host memory.
+			cudaMemcpy(odata, out, n * sizeof(int), cudaMemcpyDeviceToHost);
+			cudaFree(in);
+			cudaFree(out);
+
+			timer().endGpuTimer();
+		}
 
         /**
          * Performs stream compaction on idata, storing the result into odata.

@@ -20,6 +20,7 @@ namespace StreamCompaction {
         void scan(int n, int *odata, const int *idata) {
 	        timer().startCpuTimer();
             // TODO
+
 	        timer().endCpuTimer();
         }
 
@@ -31,6 +32,7 @@ namespace StreamCompaction {
         int compactWithoutScan(int n, int *odata, const int *idata) {
 	        timer().startCpuTimer();
             // TODO
+
 	        timer().endCpuTimer();
             return -1;
         }
@@ -43,6 +45,7 @@ namespace StreamCompaction {
         int compactWithScan(int n, int *odata, const int *idata) {
 	        timer().startCpuTimer();
 	        // TODO
+
 	        timer().endCpuTimer();
             return -1;
         }
